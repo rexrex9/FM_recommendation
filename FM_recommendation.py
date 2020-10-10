@@ -3,8 +3,9 @@ __author__='雷克斯掷骰子'
 from mxnet import nd,autograd
 from mxnet import gluon
 import readData
+from tqdm import tqdm
 
-epochs=2
+epochs=10
 batchSize=1000
 features=42
 
@@ -14,35 +15,33 @@ def sigmoid(x):
 class Net():
     def __init__(self):
         self.k=10
-        self.b = nd.random_normal(shape=(1, 1),scale=0.01,dtype='float64')
+        self.w0 = nd.random_normal(shape=(1, 1),scale=0.01,dtype='float64')
         self.w = nd.random_normal(shape=(features, 1),scale=0.01,dtype='float64')
         self.bw = nd.random_normal(shape=(features,self.k),scale=0.0001,dtype='float64')
-        self.params = [self.w, self.b,self.bw]
+        self.params = [self.w, self.w0,self.bw]
 
         for param in self.params:
             param.attach_grad()
 
-    def __getTwoCross(self,X):
-        i=0
-        t=None
-        for x in X:
-            a=x.reshape(features,1)
-            b=x.reshape(1,features)
-            c=nd.dot(a,b)
-            bbw=self.bw.reshape(self.k,features)
-            ww = nd.dot(self.bw,bbw)
-
-            s=nd.sum(ww*c).reshape((1,1))
-            if i==0:
-                t=nd.array(s)
+    def __getTwoCross(self, X):
+        batch = 0
+        t = None
+        for x in tqdm(X):
+            s = 0
+            for j1 in range(len(x)):
+                for j2 in range(j1 + 1, len(x)):
+                    s += (nd.dot(self.bw[j1],self.bw[j2]) * x[j1] * x[j2]).asscalar()
+            s = nd.array([[s]])
+            if batch == 0:
+                t = nd.array(s)
             else:
-                t=nd.concat(t,s,dim=0)
-            i+=1
+                t = nd.concat(t, s, dim=0)
+            batch += 1
         return t
 
     def net(self,x):
         aa=self.__getTwoCross(x)
-        a=self.b + nd.dot(x, self.w) + aa
+        a=self.w0 + nd.dot(x, self.w) + aa
         b=sigmoid(a)
         return b
 

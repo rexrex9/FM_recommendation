@@ -14,15 +14,15 @@ def sigmoid(x):
 
 class Net():
     def __init__(self):
+        self.w0 = nd.random_normal(shape=(1,1),scale=0.01,dtype='float64')
         self.w = nd.random_normal(shape=(features, 1),scale=0.01,dtype='float64')
-        self.b = nd.random_normal(shape=(1,1),scale=0.01,dtype='float64')
-        self.params = [self.w, self.b]
+        self.params = [self.w, self.w0]
 
         for param in self.params:
             param.attach_grad()
 
     def net(self,x):
-        a=nd.dot(x, self.w) + self.b
+        a=nd.dot(x, self.w) + self.w0
         b=sigmoid(a)
         return b
 
