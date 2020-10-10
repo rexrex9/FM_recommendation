@@ -1,3 +1,5 @@
+__author__='雷克斯掷骰子'
+
 from mxnet import nd,autograd
 from mxnet import gluon
 import readData

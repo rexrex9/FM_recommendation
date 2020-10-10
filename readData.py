@@ -1,5 +1,9 @@
-#https://grouplens.org/datasets/movielens/100k/
+__author__='雷克斯掷骰子'
 
+'''
+数据下载地址
+https://grouplens.org/datasets/movielens/100k/
+'''
 import os
 import numpy as np
 
