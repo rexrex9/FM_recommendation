@@ -73,6 +73,5 @@ def read_data():
 if __name__ == '__main__':
     trainX, trainY, testX, testY=read_data()
     print(trainX[:5])
-
-
+    print(trainY[:5])
     print(len(trainX[0]))
