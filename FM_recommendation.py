@@ -31,7 +31,7 @@ class Net():
             for j1 in range(len(x)):
                 for j2 in range(j1 + 1, len(x)):
                     s += (nd.dot(self.bw[j1],self.bw[j2]) * x[j1] * x[j2]).asscalar()
-            s = nd.array([[s]])
+            s = nd.array([[s]],dtype='float64')
             if batch == 0:
                 t = nd.array(s)
             else:

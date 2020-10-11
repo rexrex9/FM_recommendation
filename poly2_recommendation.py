@@ -32,7 +32,7 @@ class Net():
                 for j2 in range(j1+1,len(x)):
                     s += (self.bw[i]*x[j1]*x[j2]).asscalar()
                     i += 1
-            s=nd.array([[s]])
+            s=nd.array([[s]],dtype='float64')
             if batch==0:
                 t=nd.array(s)
             else:
